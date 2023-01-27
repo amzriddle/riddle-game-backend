@@ -70,3 +70,7 @@ $ npx prisma studio
 # help
 $ npx prisma --help
 ```
+
+## deploy
+backend: https://render.com/
+database: https://supabase.com/
