@@ -32,6 +32,8 @@
 $ npm install
 ```
 
+edit file named as `.env.model` to `.env`
+
 ## Running the app
 
 ```bash
@@ -72,5 +74,5 @@ $ npx prisma --help
 ```
 
 ## deploy
-backend: https://render.com/
-database: https://supabase.com/
+- backend: https://render.com/
+- database: https://supabase.com/
