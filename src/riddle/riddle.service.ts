@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRiddleDto } from './dto/create-riddle.dto';
 import { UpdateRiddleDto } from './dto/update-riddle.dto';
+import { User } from '@prisma/client';
+import { TryAnswerDto } from './dto/try-answer.dto';
 
 @Injectable()
 export class RiddleService {
@@ -46,5 +48,27 @@ export class RiddleService {
         id: id,
       },
     });
+  }
+
+  async answerRiddle(id: number, user: User, tryAnswerDto: TryAnswerDto) {
+    
+    const riddle = await this.prisma.riddle.findUniqueOrThrow({
+      where: {
+        id: id
+      }
+    })
+
+    // se resposta esta correta -> adiciona na tabela
+    if(tryAnswerDto.answer.toLowerCase() === riddle.answer.toLowerCase()){
+      const challengeComplete = await this.prisma.challengeComplete.create({
+        data: {
+          userId: user.id,
+          riddleId: id,
+        },
+      });
+
+      return challengeComplete;
+    }
+    return "nice try!"
   }
 }

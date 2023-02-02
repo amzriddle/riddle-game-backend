@@ -6,10 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { RiddleService } from './riddle.service';
 import { CreateRiddleDto } from './dto/create-riddle.dto';
 import { UpdateRiddleDto } from './dto/update-riddle.dto';
+import { GetUser } from 'src/auth/decorator';
+import { User } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
+import { TryAnswerDto } from './dto/try-answer.dto';
 
 @Controller('riddle')
 export class RiddleController {
@@ -38,5 +43,11 @@ export class RiddleController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.riddleService.remove(+id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/answer/:id')
+  answerRiddle(@Param('id') id: string, @GetUser() user: User, @Body() tryAnswerDto: TryAnswerDto) {
+    return this.riddleService.answerRiddle(+id, user, tryAnswerDto);
   }
 }
