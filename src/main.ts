@@ -11,7 +11,7 @@ async function bootstrap() {
       'https://riddle-game-app.netlify.app',
       'https://riddle-game-frontend.darth-ahsoka.repl.co'
     ],
-    allowedHeaders: 'Access-Control-Allow-Origin, Accept, Content-type',
+    allowedHeaders: 'Access-Control-Allow-Origin, Accept, Content-type, Authorization',
     credentials: true,
   });
 
