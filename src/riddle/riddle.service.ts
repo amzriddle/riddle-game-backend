@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRiddleDto } from './dto/create-riddle.dto';
@@ -69,6 +69,6 @@ export class RiddleService {
 
       return challengeComplete;
     }
-    return "nice try!"
+    throw new HttpException('Try again!', HttpStatus.OK);
   }
 }
