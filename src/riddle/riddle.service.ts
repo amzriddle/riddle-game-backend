@@ -22,12 +22,24 @@ export class RiddleService {
   }
 
   findAll() {
-    return this.prisma.riddle.findMany();
+    return this.prisma.riddle.findMany({
+      select: {
+        id: true
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
   }
 
   findOne(id: number) {
     return this.prisma.riddle.findUnique({
       where: { id: id },
+      select: {
+        id: true,
+        clue_1: true,
+        clue_2: true,
+      },
     });
   }
 
@@ -70,5 +82,23 @@ export class RiddleService {
       return challengeComplete;
     }
     throw new HttpException('Try again!', HttpStatus.OK);
+  }
+
+  allAnsweredRiddle(user: User){
+    return this.prisma.challengeComplete.findMany({
+      where: {
+        user: {
+          id: {
+            in: [user.id]
+          }
+        }
+      },
+      select: {
+        riddleId: true,
+      },
+      orderBy: {
+        riddleId: 'asc',
+      },
+    })
   }
 }

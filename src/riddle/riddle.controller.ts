@@ -30,6 +30,12 @@ export class RiddleController {
     return this.riddleService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('answered')
+  allAnsweredRiddle(@GetUser() user: User){
+    return this.riddleService.allAnsweredRiddle(user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.riddleService.findOne(+id);
@@ -46,7 +52,7 @@ export class RiddleController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('/answer/:id')
+  @Post('answer/:id')
   answerRiddle(@Param('id') id: string, @GetUser() user: User, @Body() tryAnswerDto: TryAnswerDto) {
     return this.riddleService.answerRiddle(+id, user, tryAnswerDto);
   }
