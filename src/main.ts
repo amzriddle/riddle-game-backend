@@ -8,10 +8,11 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'https://erikalira-symmetrical-xylophone-4gw7vpv6jwvcj94g-3000.preview.app.github.dev',
-      'https://riddle-game-app.netlify.app',
-      'https://riddle-game-frontend.darth-ahsoka.repl.co'
+      'https://amzeriddle.netlify.app',
+      'https://riddle-game-frontend.darth-ahsoka.repl.co',
+      'https://darth-ahsoka-turbo-bassoon-gp6r6j49wrwf9766-3000.preview.app.github.dev'
     ],
-    allowedHeaders: 'Access-Control-Allow-Origin, Accept, Content-type',
+    allowedHeaders: 'Access-Control-Allow-Origin, Accept, Content-type, Authorization',
     credentials: true,
   });
 
