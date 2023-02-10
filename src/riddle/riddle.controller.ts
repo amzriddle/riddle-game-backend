@@ -36,6 +36,12 @@ export class RiddleController {
     return this.riddleService.allAnsweredRiddle(user);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('next')
+  nextRiddle(@GetUser() user: User){
+    return this.riddleService.nextRiddle(user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.riddleService.findOne(+id);

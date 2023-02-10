@@ -101,4 +101,41 @@ export class RiddleService {
       },
     })
   }
+
+  async nextRiddle(user: User){
+    const lastAnswered = await this.prisma.challengeComplete.findFirst({
+      where: {
+        user: {
+          id: {
+            in: [user.id]
+          }
+        }
+      },
+      select: {
+        riddleId: true,
+      },
+      orderBy: {
+        riddleId: 'desc',
+      },
+    })
+
+    const nextRiddle = await this.prisma.riddle.findFirst({
+      where: {
+        id: {
+          gt: lastAnswered.riddleId
+        }
+      },
+      select: {
+        id: true
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+    
+    return {
+      lastAnswered: lastAnswered.riddleId, 
+      nextRiddle: nextRiddle.id
+    }
+  }
 }
