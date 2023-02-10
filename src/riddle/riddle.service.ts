@@ -119,6 +119,19 @@ export class RiddleService {
       },
     })
 
+    if(!lastAnswered){
+      const firstRiddle = await this.prisma.riddle.findFirst({
+        orderBy: {
+          id: 'asc',
+        },
+      })
+
+      return {
+        lastAnswered: null, 
+        nextRiddle: firstRiddle.id
+      }
+    }
+
     const nextRiddle = await this.prisma.riddle.findFirst({
       where: {
         id: {
