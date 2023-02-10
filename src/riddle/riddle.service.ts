@@ -132,10 +132,12 @@ export class RiddleService {
         id: 'asc',
       },
     });
-    
+
     return {
       lastAnswered: lastAnswered.riddleId, 
-      nextRiddle: nextRiddle.id
+      nextRiddle: nextRiddle?    
+        nextRiddle.id : 
+        null
     }
-  }
+  }  
 }
