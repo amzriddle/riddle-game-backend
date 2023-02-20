@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RiddleModule } from './riddle/riddle.module';
+import { RankingModule } from './ranking/ranking.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RiddleModule } from './riddle/riddle.module';
     UserModule,
     PrismaModule,
     RiddleModule,
+    RankingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

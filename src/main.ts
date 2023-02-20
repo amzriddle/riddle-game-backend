@@ -10,7 +10,7 @@ async function bootstrap() {
       'https://erikalira-symmetrical-xylophone-4gw7vpv6jwvcj94g-3000.preview.app.github.dev',
       'https://amzeriddle.netlify.app',
       'https://riddle-game-frontend.darth-ahsoka.repl.co',
-      'https://darth-ahsoka-turbo-bassoon-gp6r6j49wrwf9766-3000.preview.app.github.dev'
+      'https://amzriddle-probable-rotary-phone-w4x5xpr64p53r4v-3000.preview.app.github.dev'
     ],
     allowedHeaders: 'Access-Control-Allow-Origin, Accept, Content-type, Authorization',
     credentials: true,
