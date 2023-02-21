@@ -18,12 +18,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   email String @unique
-  hash  String
-
   username String @unique
-
-  firstName String?
-  lastName  String?
+  hash  String
 
   challengesComplete ChallengeComplete[]
 
