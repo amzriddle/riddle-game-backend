@@ -3,27 +3,27 @@ import { ConfigService } from "@nestjs/config";
 import { Exclude } from "class-transformer";
 import { PrismaService } from "src/prisma/prisma.service";
 
+function toJson(data) {
+    return JSON.stringify(data, (_, v) => typeof v === 'bigint' ? `${v}n` : v)
+        .replace(/"(-?\d+)n"/g, (_, a) => a);
+}
+
 @Injectable()
 export class RankingService {
   constructor(private prisma: PrismaService, private config: ConfigService) {}
 
   async findRanking() {
-    const rankingUnordered = await this.prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        _count: {
-          select: {
-            challengesComplete: true,
-          },
-        },
-      },
-    });
-
-    const ranking = rankingUnordered.sort(
-      (a, b) => b._count.challengesComplete - a._count.challengesComplete
-    );
-
-    return ranking;
+    const ranking = await this.prisma.$queryRaw`
+      SELECT 
+        users.email, 
+        COUNT("ChallengeComplete"."riddleId") AS "completeChallengesCount",
+        RANK() OVER (ORDER BY COUNT("ChallengeComplete"."riddleId") DESC)
+      FROM "users"
+      RIGHT JOIN "ChallengeComplete" 
+      ON "users"."id" = "ChallengeComplete"."userId"
+      GROUP BY users.id
+    `;
+    
+    return toJson(ranking)
   }
 }
