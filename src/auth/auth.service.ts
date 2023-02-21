@@ -6,6 +6,7 @@ import { ForbiddenException } from "@nestjs/common";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
+import { SigninDto } from "./dto/signin.dto";
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
       const user = await this.prisma.user.create({
         data: {
           email: dto.email,
+          username: dto.username,
           hash,
         },
       });
@@ -34,14 +36,14 @@ export class AuthService {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === "P2002") {
-          throw new ForbiddenException("Email already exists!");
+          throw new ForbiddenException("Email or username already exists!");
         }
       }
       throw error;
     }
   }
 
-  async signin(dto: AuthDto) {
+  async signin(dto: SigninDto) {
     // find the user by email
     const user = await this.prisma.user.findUnique({
       where: {

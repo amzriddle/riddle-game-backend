@@ -9,8 +9,3 @@ nest new riddle-game
 ## auth
 - passport
 - jwt
-
-
-
-
-
