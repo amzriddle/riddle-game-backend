@@ -19,7 +19,7 @@ export class RankingService {
 
     const ranking = await this.prisma.$queryRaw`
       SELECT 
-        users.email, 
+        users.username, 
         COUNT("ChallengeComplete"."riddleId") AS "completeChallengesCount",
         RANK() OVER (ORDER BY COUNT("ChallengeComplete"."riddleId") DESC)
       FROM "users"
