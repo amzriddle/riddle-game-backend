@@ -63,11 +63,11 @@ $ npm run test:cov
 ## Prisma(database)
 
 ```bash
-# migrate schema changes
-$ npx prisma migrate dev
-
 # view database
 $ npx prisma studio
+
+# migrate schema changes
+$ npx prisma migrate dev
 
 # help
 $ npx prisma --help

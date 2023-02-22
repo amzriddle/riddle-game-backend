@@ -1,10 +1,10 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateRiddleDto } from './dto/create-riddle.dto';
-import { UpdateRiddleDto } from './dto/update-riddle.dto';
-import { User } from '@prisma/client';
-import { TryAnswerDto } from './dto/try-answer.dto';
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateRiddleDto } from "./dto/create-riddle.dto";
+import { UpdateRiddleDto } from "./dto/update-riddle.dto";
+import { User } from "@prisma/client";
+import { TryAnswerDto } from "./dto/try-answer.dto";
 
 @Injectable()
 export class RiddleService {
@@ -24,10 +24,10 @@ export class RiddleService {
   findAll() {
     return this.prisma.riddle.findMany({
       select: {
-        id: true
+        id: true,
       },
       orderBy: {
-        id: 'asc',
+        id: "asc",
       },
     });
   }
@@ -63,15 +63,14 @@ export class RiddleService {
   }
 
   async answerRiddle(id: number, user: User, tryAnswerDto: TryAnswerDto) {
-    
     const riddle = await this.prisma.riddle.findUniqueOrThrow({
       where: {
-        id: id
-      }
-    })
+        id: id,
+      },
+    });
 
     // se resposta esta correta -> adiciona na tabela
-    if(tryAnswerDto.answer.toLowerCase() === riddle.answer.toLowerCase()){
+    if (tryAnswerDto.answer.toLowerCase() === riddle.answer.toLowerCase()) {
       const challengeComplete = await this.prisma.challengeComplete.create({
         data: {
           userId: user.id,
@@ -81,76 +80,74 @@ export class RiddleService {
 
       return challengeComplete;
     }
-    throw new HttpException('Try again!', HttpStatus.OK);
+    throw new HttpException("Try again!", HttpStatus.OK);
   }
 
-  allAnsweredRiddle(user: User){
+  allAnsweredRiddle(user: User) {
     return this.prisma.challengeComplete.findMany({
       where: {
         user: {
           id: {
-            in: [user.id]
-          }
-        }
+            in: [user.id],
+          },
+        },
       },
       select: {
         riddleId: true,
       },
       orderBy: {
-        riddleId: 'asc',
+        riddleId: "asc",
       },
-    })
+    });
   }
 
-  async nextRiddle(user: User){
+  async nextRiddle(user: User) {
     const lastAnswered = await this.prisma.challengeComplete.findFirst({
       where: {
         user: {
           id: {
-            in: [user.id]
-          }
-        }
+            in: [user.id],
+          },
+        },
       },
       select: {
         riddleId: true,
       },
       orderBy: {
-        riddleId: 'desc',
+        riddleId: "desc",
       },
-    })
+    });
 
-    if(!lastAnswered){
+    if (!lastAnswered) {
       const firstRiddle = await this.prisma.riddle.findFirst({
         orderBy: {
-          id: 'asc',
+          id: "asc",
         },
-      })
+      });
 
       return {
-        lastAnswered: null, 
-        nextRiddle: firstRiddle.id
-      }
+        lastAnswered: null,
+        nextRiddle: firstRiddle.id,
+      };
     }
 
     const nextRiddle = await this.prisma.riddle.findFirst({
       where: {
         id: {
-          gt: lastAnswered.riddleId
-        }
+          gt: lastAnswered.riddleId,
+        },
       },
       select: {
-        id: true
+        id: true,
       },
       orderBy: {
-        id: 'asc',
+        id: "asc",
       },
     });
 
     return {
-      lastAnswered: lastAnswered.riddleId, 
-      nextRiddle: nextRiddle?    
-        nextRiddle.id : 
-        null
-    }
-  }  
+      lastAnswered: lastAnswered.riddleId,
+      nextRiddle: nextRiddle ? nextRiddle.id : null,
+    };
+  }
 }
